@@ -1,39 +1,43 @@
-package SnakeGame;
+package SnakeGame; 
 
-public class Main {
+public class Main{
 
+
+	
 	public static void main(String[] args) {
 		
 		Terminal terminal = new Terminal(); 
-		
+		CleanTerminal clear = new CleanTerminal();
+
+
 		int option = terminal.gameMenu();
-		
-		
+
+
 		switch (option) {
-			
-		case 1: 
-			boolean finishGame=false;
-			terminal.askUserInformationtoInitBoard();
-			terminal.getBoard().initBoard();
-			terminal.getBoard().print();
-			while (finishGame) {
+			case 1:
+
+				boolean gameOver = terminal.getBoard().LoseGame(false);
+				terminal.askUserInformationtoInitBoard();
+				terminal.getBoard().initBoard();
 				
-				terminal.getBoard().snakeMovement();
-				finishGame = terminal.getBoard().LoseGame();
-				finishGame  = terminal.getBoard().winGame();
-			}
-			
-			break; 
-		case 2: //crear un fichero donde exl¡plica las normas del juego.
-			break; 
-		case 0:
-			System.exit(0);
-			break; 
-			
+				do {clear.clearScreen();
+					terminal.getBoard().print();
+					terminal.askUserToSetMoviment();
+					clear.clearScreen();
+				
+				} while(gameOver);
+				//break;
+				
+			case 2:
+				// Código para el caso 2
+				break;
+				
+			default:
+				// Código para el caso por defecto
+				break;
 		}
 		
-		
-
 	}
-
 }
+
+		

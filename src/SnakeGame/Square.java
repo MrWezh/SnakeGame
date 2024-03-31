@@ -5,6 +5,7 @@ public enum Square {
 	SNAKE,
 	SNAKEHEAD,
 	BOARD,
+	SNAKETAIL,
 	APPLE
 	
 

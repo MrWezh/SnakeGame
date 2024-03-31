@@ -39,24 +39,44 @@ public class Terminal {
 		int size = wz.nextInt();
 		
 		if (size < 4) {
-			while (true) {
-			System.out.println("********************ERROR, SIZE INCORRECT*******************");
-			System.out.println("****THE SIZE SHOULD BE POSITIVE(MINIMUM BOARD SIZE IS 4)****");
-			System.out.println(); 
-			System.out.println("PLEASE, RE-ENTER THE BOARD SIZE:");
-			size = wz.nextInt();
+				while (true) {
+				System.out.println("********************ERROR, SIZE INCORRECT*******************");
+				System.out.println("****THE SIZE SHOULD BE POSITIVE(MINIMUM BOARD SIZE IS 4)****");
+				System.out.println(); 
+				System.out.println("PLEASE, RE-ENTER THE BOARD SIZE:");
+				size = wz.nextInt();
+				
+				if (size >= 4 ) { 
+					this.board.setSize(size); 
+				
+					 break;}
+				
+				}
+				
 			
-			if (size >= 4 ) {int column = size*2; 
-				this.board.setSize(size); this.board.setColumn(column); break;}
-			
+		}
+		
+		else{ 
+			this.board.setSize(size); 
 			}
-			
-			
-		}else{ 
-			int column = size*2; 
-			this.board.setSize(size); this.board.setColumn(column);}
 		
 	}
+
+
+	public void askUserToSetMoviment(){
+
+		System.out.println();
+		System.out.print("Indroduzca la dirección que irá la serpiente:");
+		String Moviment = wz.next().toLowerCase();
+		
+
+
+		this.getBoard().snakeMovement(Moviment.charAt(0)); 
+
+	}
+
+
+
 	
 	
 
