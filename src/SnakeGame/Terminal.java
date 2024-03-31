@@ -59,6 +59,28 @@ public class Terminal {
 		else{ 
 			this.board.setSize(size); 
 			}
+
+		int boarDimension = this.board.getSize()*2;
+		System.out.print("POINTS YOU WANT TO GET TO WIN(MAX "+(boarDimension)+" points): ");
+		int goal = wz.nextInt();
+
+			if(goal > boarDimension){
+				while (true) {
+					System.out.println("********************ERROR, GOAL INCORRECT*******************");
+					System.out.println("*******************THIS GOAL IS IMPOSSIBLE******************");
+					System.out.println(); 
+					System.out.println("PLEASE, RE-ENTER THE YOUR GOAL:");
+					size = wz.nextInt();
+					
+					if (goal <= boarDimension ) { 
+						this.board.setGoal(goal); 
+					
+						 break;}
+					
+					}
+			}
+			else this.board.setGoal(goal);
+
 		
 	}
 
@@ -66,18 +88,14 @@ public class Terminal {
 	public void askUserToSetMoviment(){
 
 		System.out.println();
-		System.out.print("Indroduzca la dirección que irá la serpiente:");
+		System.out.print("Snake Moviment(a/w/s/d):");
 		String Moviment = wz.next().toLowerCase();
 		
 
 
-		this.getBoard().snakeMovement(Moviment.charAt(0)); 
+		this.board.snakeMovement(Moviment.charAt(0)); 
 
 	}
 
-
-
-	
-	
 
 }

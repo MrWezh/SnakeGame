@@ -14,9 +14,18 @@ public class Main{
 
 
 		switch (option) {
-			case 1:
+			
+			case 2:
+				// Código para el caso 2
+				break;
 
-				boolean gameOver = terminal.getBoard().LoseGame(false);
+			case 0: 
+				System.exit(0);
+				break;
+
+				case 1:
+
+				boolean gameOver = false;
 				terminal.askUserInformationtoInitBoard();
 				terminal.getBoard().initBoard();
 				
@@ -24,14 +33,11 @@ public class Main{
 					terminal.getBoard().print();
 					terminal.askUserToSetMoviment();
 					clear.clearScreen();
-				
-				} while(gameOver);
-				//break;
-				
-			case 2:
-				// Código para el caso 2
+					gameOver = terminal.getBoard().gameOver();
+				} while(!gameOver);
+				System.out.println("You win!!!");
 				break;
-				
+
 			default:
 				// Código para el caso por defecto
 				break;
