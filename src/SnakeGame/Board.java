@@ -1,5 +1,5 @@
 package SnakeGame;
-import java.util.*;
+import java.util.Random;
 
 public class Board {
 	private int size; 
@@ -9,9 +9,6 @@ public class Board {
 
 	private int coordenatexHead;
 	private int coordenateyHead;
-
-	private int coordenatexTail;
-	private int coordenateyTail;
 
 	private int points=0; 
 	private int goal; 
@@ -30,6 +27,12 @@ public class Board {
 
 	public void setGoal(int goal) {
 		this.goal = goal;
+	}
+
+	
+
+	public void setPoints(int points) {
+		this.points = points;
 	}
 
 	private void randomGenerateApple() {
@@ -77,7 +80,6 @@ public class Board {
 
 			this.square[row][column] = Square.SNAKE; 
 			this.snakeBody[row][column] = 3; 
-			this.coordenatexTail = row; this.coordenateyTail = column; 
 			this.square[row][column+1] = Square.SNAKE;
 			this.snakeBody[row][column+1] = 2; 
 			this.square[row][column+2] = Square.SNAKEHEAD;
@@ -92,7 +94,8 @@ public class Board {
 				if (this.square[i][j]!=Square.BOARD){
 					if(this.snakeBody[i][j]!=-1){this.snakeBody[i][j]++; 
 					this.square[i][j] = Square.SNAKE; }
-					if(this.snakeBody[i][j]>(3+points)){this.snakeBody[i][j] = 0;this.square[i][j] = Square.BOARD;}
+					if(this.snakeBody[i][j]>(3+points))
+					{this.snakeBody[i][j] = 0;this.square[i][j] = Square.BOARD;}
 					}
 				}
 			}
@@ -105,91 +108,71 @@ public class Board {
 		this.points++;
 		this.randomGenerateApple();
 	}
+
+	private void gameLose(int coordenate, int x, int y, boolean option){
+		
+				if (option&&(coordenate - 1 < 0 || 
+				this.snakeBody[coordenatexHead + x][coordenateyHead + y] > 1)) {
+					System.out.println("GAME OVER");
+					System.exit(0);
+				}
+				else if (!option&&(coordenate + 1 == this.size ||
+						this.snakeBody[coordenatexHead + x][coordenateyHead + y] > 1)) {
+					System.out.println("GAME OVER");
+					System.exit(0);
+				}
+
+		}
+	
 	
 	
 	public void snakeMovement(char input) {
-		
+
+		this.calculationForSnakeMoviment();
+
 		switch (input) {
 			case 'a':
 			
-
-				if(coordenateyHead-1==-1||this.snakeBody[coordenatexHead][coordenateyHead-1]>3){
-					System.out.println("GAME OVER");
-					System.exit(0);
-				}
-
-				else{
-				
-				this.calculationForSnakeMoviment();
+				gameLose(coordenateyHead, 0, -1, true);	
 				this.coordenateyHead--;
-				
-				this.square[coordenatexHead][coordenateyHead]=Square.SNAKEHEAD;
 
-				
-				if(this.apple[coordenatexHead][coordenateyHead]){this.eatApple();}
-				else this.snakeBody[coordenatexHead][coordenateyHead]=1;
-			}break;
+				break;
 
 			case 'w':
 			
-		
-
-				if((coordenatexHead-1)<0||this.snakeBody[coordenatexHead-1][coordenateyHead]>3){
-					System.out.println("GAME OVER");
-					System.exit(0);
-				}
-
-				else {
-					
-				this.calculationForSnakeMoviment();
-				
+				gameLose(coordenatexHead, -1, 0, true);
 				this.coordenatexHead--;
-				this.square[coordenatexHead][coordenateyHead]=Square.SNAKEHEAD;
 
-				if(this.apple[coordenatexHead][coordenateyHead]){this.eatApple();}
-				else this.snakeBody[coordenatexHead][coordenateyHead]=1;
-				}break;
+				break;
 
 			case 's':
 
-				if(coordenatexHead+1==this.size||this.snakeBody[coordenatexHead+1][coordenateyHead]>3){
-					System.out.println("GAME OVER");
-					System.exit(0);
-				}
-				else{
-
-				this.calculationForSnakeMoviment();
+				gameLose(coordenatexHead, +1, 0, false);
 				this.coordenatexHead++;
-				this.square[coordenatexHead][coordenateyHead]=Square.SNAKEHEAD;
-
-				if(this.apple[coordenatexHead][coordenateyHead]){this.eatApple();}
-				else this.snakeBody[coordenatexHead][coordenateyHead]=1;
 				
-			}break; 
+			break; 
 
 			case 'd':
 
-	
-				if(coordenateyHead+1==this.size||this.snakeBody[coordenatexHead][coordenateyHead+1]>3){
-					System.out.println("GAME OVER");
-					System.exit(0);
-				}
-				else{
-
-				this.calculationForSnakeMoviment();
+				gameLose(coordenateyHead, 0, +1, false);
 				this.coordenateyHead++;
-				this.square[coordenatexHead][coordenateyHead]=Square.SNAKEHEAD;
 
-				if(this.apple[coordenatexHead][coordenateyHead]){this.eatApple();}
-				this.snakeBody[coordenatexHead][coordenateyHead]=1;
-				}break; 
+				break; 
 				
 			default:
 			System.out.println("Snake: ¿Què?");
 				break;
 		}
-					
-					
+
+		if (this.apple[coordenatexHead][coordenateyHead]) {
+			this.eatApple();
+		} 
+		
+		else{
+			this.snakeBody[coordenatexHead][coordenateyHead] = 1;
+		}
+		this.square[coordenatexHead][coordenateyHead] = Square.SNAKEHEAD;
+			
 	}
 
 
@@ -197,43 +180,56 @@ public class Board {
 		System.out.println("POINTS: "+this.points);
 		System.out.println("GOAL: "+this.goal);
 
+		System.out.print("╔");
+		for (int i = -1; i < apple.length*2; i++) {
+				System.out.print("═");			
+		}System.out.println("╗");
+
 		for (int i = 0; i < this.size; i++) {
+			System.out.print("║");
 			for (int j = 0; j < this.size; j++) {
 
 				Square symbol = this.square[i][j];
 				switch (symbol) {
 					case BOARD:
-						System.out.printf("%-4s","·");		
+						if(j==this.size-1)System.out.print("   ");
+						else System.out.printf("%-2s","  ");		
 						break;
 
 					case SNAKE:
-						System.out.printf("%-4s","■");		
+						if (j == this.size - 1)
+							System.out.print(" ■ ");
+						else
+							System.out.printf("%-2s"," ■");		
 						break; 
 				
 					case SNAKEHEAD:
-						System.out.printf("%-4s","#");
+						if (j == this.size - 1)
+							System.out.print(" # ");
+						else	
+							System.out.printf("%-2s"," #");
 						break; 
 					case APPLE:
-						System.out.printf("%-4s","@");
+						if (j == this.size - 1)
+							System.out.print(" @ ");
+						else
+							System.out.printf("%-2s"," @");
 						break; 
 				
 				}
-			}System.out.println();
+			}
+			System.out.println("║");
 		}
-
-
-		for (int i = 0; i < apple.length; i++) {
-			for (int j = 0; j < apple.length; j++) {
-				System.out.print(this.snakeBody[i][j]+" ");
-			}System.out.println();
-			
-		}System.out.println(coordenatexHead+" " +coordenateyHead);
-			System.out.println(coordenatexTail+" " +coordenateyTail);
+		System.out.print("╚");
+		for (int i = -1; i < this.size*2; i++) {
+			System.out.print("═");
+		}
+		System.out.println("╝");
 
 	}
 
 	
-	public boolean gameOver() {
+	public boolean gameWin() {
 
 		if (this.points == this.goal)return true;
 		else return false ;
